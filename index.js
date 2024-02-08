@@ -4,7 +4,6 @@ window.onload = () => {
     let headerLogo = this.document.querySelector(".headerLogo");
     let scrollPosition = window.scrollY;
     if (scrollPosition > 50) {
-      // Change 50 to whatever scroll position you want
       header.classList.add("headerBg");
       headerLogo.classList.add("headerLogoFixed");
     } else {
@@ -83,20 +82,10 @@ window.onload = () => {
         this.getAttribute("playlabel") ||
         "Play";
 
-      /**
-       * Lo, the youtube placeholder image!  (aka the thumbnail, poster image, etc)
-       *
-       * See https://github.com/paulirish/lite-youtube-embed/blob/master/youtube-thumbnail-urls.md
-       *
-       * TODO: Do the sddefault->hqdefault fallback
-       *       - When doing this, apply referrerpolicy (https://github.com/ampproject/amphtml/pull/3940)
-       * TODO: Consider using webp if supported, falling back to jpg
-       */
       if (!this.style.backgroundImage) {
         this.style.backgroundImage = `url("https://i.ytimg.com/vi/${this.videoId}/hqdefault.jpg")`;
       }
 
-      // Set up play button, and its visually hidden label
       if (!playBtnEl) {
         playBtnEl = document.createElement("button");
         playBtnEl.type = "button";
@@ -111,28 +100,16 @@ window.onload = () => {
       }
       playBtnEl.removeAttribute("href");
 
-      // On hover (or tap), warm up the TCP connections we're (likely) about to use.
       this.addEventListener("pointerover", LiteYTEmbed.warmConnections, {
         once: true,
       });
 
-      // Once the user clicks, add the real iframe and drop our play button
-      // TODO: In the future we could be like amp-youtube and silently swap in the iframe during idle time
-      //   We'd want to only do this for in-viewport or near-viewport ones: https://github.com/ampproject/amphtml/pull/5003
       this.addEventListener("click", this.addIframe);
-
-      // Chrome & Edge desktop have no problem with the basic YouTube Embed with ?autoplay=1
-      // However Safari desktop and most/all mobile browsers do not successfully track the user gesture of clicking through the creation/loading of the iframe,
-      // so they don't autoplay automatically. Instead we must load an additional 2 sequential JS files (1KB + 165KB) (un-br) for the YT Player API
-      // TODO: Try loading the the YT API in parallel with our iframe and then attaching/playing it. #82
       this.needsYTApiForAutoplay =
         navigator.vendor.includes("Apple") ||
         navigator.userAgent.includes("Mobi");
     }
 
-    /**
-     * Add a <link rel={preload | preconnect} ...> to the head
-     */
     static addPrefetch(kind, url, as) {
       const linkEl = document.createElement("link");
       linkEl.rel = kind;
