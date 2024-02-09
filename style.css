@@ -63,8 +63,8 @@ header {
   z-index: 1000;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); }
   header a img {
-    width: 160px;
-    height: 33px; }
+    width: 197px;
+    height: 40px; }
 
 .headerBg {
   background-color: lightgray; }
@@ -513,7 +513,8 @@ section.error-404 {
   header {
     height: 65px; }
     header a img {
-      height: 35px; }
+      width: 160px;
+      object-fit: contain; }
   section.subscribe .container h2 {
     font-size: 18px; }
   section.subscribe .container p {
